@@ -1,0 +1,49 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.navigation-menu {
+    background-color: black;
+}
+
+li {
+    list-style: none;
+    background-color: black;
+    font: 14px 'Arial', sans-serif;
+}
+
+a {
+    display: block;
+    text-decoration: none;
+    color: lightgray;
+    transition: color .5s;
+    padding: 20px;
+}
+
+a:hover,
+a:focus {
+    color: white;
+    transition: color .5s;
+}
+
+.level1 > li {
+    display: inline-block;
+    float: left;
+}
+
+.level2 {
+    position: absolute;
+    display: none;
+}
+
+.level2 > li > a {
+    background-color: black;
+    width: 150px;
+}
+
+.level2 > li > a:hover,
+.level2 > li > a:focus {
+    background-color: gray;
+}
+
