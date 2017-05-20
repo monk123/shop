@@ -26,32 +26,37 @@ public class ProductDaoImpl extends BaseDaoImpl<Product, Long> implements Produc
 
     /**
      * shows a limited number of products depending on the parameters
+     *
      * @param firstValue
      * @param maxValue
      * @return
      */
     @Override
     public List<Product> paginationProduct(int firstValue, int maxValue) {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
         Root<Product> root = criteria.from(Product.class);
         criteria.select(root);
-
-        return session.createQuery(criteria)
+        List<Product> products = session.createQuery(criteria)
                 .setFirstResult(firstValue)
                 .setMaxResults(maxValue)
                 .list();
+
+        products.forEach(product -> log.info("Pagination product: " + product));
+
+        return products;
     }
 
     /**
      * this method is needed to find product by name
+     *
      * @param name
      * @return
      */
     @Override
     public Product findProduct(String name) {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
         Root<Product> root = criteria.from(Product.class);
@@ -67,12 +72,47 @@ public class ProductDaoImpl extends BaseDaoImpl<Product, Long> implements Produc
     }
 
     @Override
-    public List<Product> getProductByCategoryName(String name, int val1, int val2) {
-        Session session = currentSession();
-        Query query = session
-                .createQuery("select p from Product p where category.categoryName=:name")
-                .setParameter("name", name)
-                .setFirstResult(val1).setMaxResults(val2);
-        return (List<Product>) query.getResultList();
+    public List<Product> desc(int first, int second) {
+        Session session = getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+        criteria.select(root).orderBy(builder.desc(root.get("price")));
+        List<Product> products = session.createQuery(criteria)
+                .setFirstResult(first)
+                .setMaxResults(second)
+                .list();
+        products.forEach(product -> log.info("Products desc: " + product));
+        return products;
+    }
+
+    @Override
+    public List<Product> asc(int first, int second) {
+        Session session = getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+        criteria.select(root).orderBy(builder.asc(root.get("price")));
+        List<Product> products = session.createQuery(criteria)
+                .setFirstResult(first)
+                .setMaxResults(second)
+                .list();
+        products.forEach(product -> log.info("Products asc: " + product));
+        return products;
+    }
+
+    @Override
+    public List<Product> between(int first, int second, int startPrice, int finishPrice) {
+        Session session = getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Product> criteria = builder.createQuery(Product.class);
+        Root<Product> root = criteria.from(Product.class);
+        builder.between(root.get("price"), startPrice, finishPrice);
+        List<Product> products = session.createQuery(criteria)
+                .setFirstResult(first)
+                .setMaxResults(second)
+                .list();
+        products.forEach(product -> log.info("Products between: " + product));
+        return products;
     }
 }

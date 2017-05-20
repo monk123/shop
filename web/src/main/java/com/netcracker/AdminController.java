@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -65,10 +62,12 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/list", method = RequestMethod.GET)
-    public String listProduct(Model model){
+    public String listProduct(Model model, @RequestParam(value = "page", defaultValue = "0",
+            required = false) Integer number) {
 
         model.addAttribute("product", new Product());
-        model.addAttribute("products", productService.paginationProduct(0, 10));
+
+        model.addAttribute("products", productService.paginationProduct(0, 5));
 
         return "admin/productAdminList";
     }
@@ -103,7 +102,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/showById/{id}", method = RequestMethod.GET)
-    public String getProductById(@PathVariable Long id, Product product,
+    public String getProductById(@PathVariable(value = "id") Long id, Product product,
                                  Model model) {
 
         product = productService.getEntityById(id);
@@ -114,7 +113,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/edit/{id}", method = RequestMethod.GET)
-    public String editProduct(@PathVariable Long id,  Model model) {
+    public String editProduct(@PathVariable(value = "id") Long id,  Model model) {
 
         Product product;
 
@@ -130,9 +129,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/edit/{id}", method = RequestMethod.POST)
-    public String editProduct(@PathVariable Long id, @ModelAttribute Product product,
+    public String editProduct(@PathVariable(value = "id") Long id, @ModelAttribute Product product,
                               BindingResult bindingResult, Model model) {
-
         productFormValidator.validate(product, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -151,11 +149,11 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/product/delete/{id}", method = RequestMethod.GET)
-    public String deleteProduct(@PathVariable Long id) {
+    public String deleteProduct(@PathVariable(value = "id") Long id) {
 
         productService.delete(id);
 
-        return "redirect:product/list";
+        return "redirect:/admin/productAdminList";
     }
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
@@ -163,6 +161,6 @@ public class AdminController {
 
         model.addAttribute("users", userService.paginationUser(0, 10));
 
-        return "/admin/userAdminList";
+        return "admin/userAdminList";
     }
 }

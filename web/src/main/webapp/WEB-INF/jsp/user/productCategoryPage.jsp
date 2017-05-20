@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="img" value="/resources/font/"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,7 @@
             <div class="row">
                 <c:forEach var="product" items="${products}">
                     <div class="col-xs-12">
-                        <img src="${product.photo}"/>
+                        <img src="${img}${product.photo}"/>
                         <div class="caption">
                             <h4 class="pull-right">${product.price} $</h4>
                             <h4><a href="#">${product.name}</a></h4>
@@ -52,6 +53,12 @@
                                         <spring:message code="label_product_show"/>
                                     </button>
                                 </a>
+                            </div>
+                            <div class="col-md-6">
+                                <spring:url value="/product/bucket/${product.id}" var="orderURL"/>
+                                <button type="button" class="btn-default" onclick="location.href='${orderURL}'">
+                                    <spring:message code="label.product.addBucket"/>
+                                </button>
                             </div>
                         </div>
                     </div>

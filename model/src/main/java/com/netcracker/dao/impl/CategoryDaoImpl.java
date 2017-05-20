@@ -30,7 +30,7 @@ public class CategoryDaoImpl extends BaseDaoImpl<Category, Long> implements Cate
      */
     @Override
     public Category findCategoryByCategoryName(String categoryName) {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Category> criteria = builder.createQuery(Category.class);
         Root<Category> root = criteria.from(Category.class);
@@ -41,12 +41,13 @@ public class CategoryDaoImpl extends BaseDaoImpl<Category, Long> implements Cate
             categories.forEach(category -> log.info(category.getClass() + " list: " + category));
             return categories.get(0);
         }
+
         return null;
     }
 
     @Override
     public List<String> getCategoryByUniqueName() {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<String> criteria = builder.createQuery(String.class);
         Root<Category> root = criteria.from(Category.class);

@@ -9,4 +9,6 @@ public interface UserDao extends BaseDao<User, Long> {
     List<User> paginationUser(int firstValue, int maxValue);
 
     User loadByUsername(String username);
+
+    User loadUserByEmail(String email);
 }

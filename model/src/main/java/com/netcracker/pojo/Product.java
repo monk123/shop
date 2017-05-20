@@ -38,22 +38,20 @@ public class Product extends BaseEntity {
     @Getter @Setter
     private Double price;
 
-    @Column(name = "COUNT")
-    @Getter @Setter
-    private Integer count;
-
     @Column(name = "PHOTO")
     @Getter @Setter
     private String photo;
+
+    private String code;
 
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     @Getter @Setter
     private Category category;
 
-    @ManyToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
     @Getter @Setter
-    private Set<Order> orders = new HashSet<>();
+    private Set<OrderDetail> orders = new HashSet<>();
 
     public Product(String name, String description, Double price, String photo) {
         this.name = name;
@@ -70,13 +68,14 @@ public class Product extends BaseEntity {
         this.category = category;
     }
 
-    public Product(String name, String description, Double price, Integer count, String photo, Category category) {
+    public Product(String name, String description, Double price, String photo, String code, Category category, Set<OrderDetail> orders) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.count = count;
         this.photo = photo;
+        this.code = code;
         this.category = category;
+        this.orders = orders;
     }
 
     @Override
@@ -90,7 +89,6 @@ public class Product extends BaseEntity {
         if (!name.equals(product.name)) return false;
         if (!description.equals(product.description)) return false;
         if (!price.equals(product.price)) return false;
-        if (!count.equals(product.count)) return false;
         return photo.equals(product.photo);
     }
 
@@ -100,7 +98,6 @@ public class Product extends BaseEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (count != null ? count.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         return result;
     }
@@ -111,7 +108,6 @@ public class Product extends BaseEntity {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", count=" + count +
                 ", photo='" + photo + '\'' +
                 '}';
     }

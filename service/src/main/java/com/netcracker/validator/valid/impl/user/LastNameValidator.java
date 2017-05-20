@@ -21,7 +21,7 @@ public class LastNameValidator implements ValidatorService {
     /**
      * Набор из букв(латиница + кириллца)
      */
-    private static final String LASTNAME_PATTER = "^[а-яА-ЯёЁa-zA-Z]$";
+    private static final String LASTNAME_PATTER = "[а-яА-ЯёЁa-zA-Z]{2,15}";
 
     public LastNameValidator() {
         this.pattern = Pattern.compile(LASTNAME_PATTER);

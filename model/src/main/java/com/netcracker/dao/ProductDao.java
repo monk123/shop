@@ -14,5 +14,9 @@ public interface ProductDao extends BaseDao<Product, Long> {
 
     Product findProduct(String firstName);
 
-    List<Product> getProductByCategoryName(String name, int val1, int val2);
+    List<Product> desc(int first, int second);
+
+    List<Product> asc(int first, int second);
+
+    List<Product> between(int first, int second, int startPrice, int finishPrice);
 }

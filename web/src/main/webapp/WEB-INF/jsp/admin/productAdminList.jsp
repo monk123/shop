@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="img" value="/resources/font/"/>
 <html>
 <head>
     <title>AdminListPage</title>
@@ -39,11 +40,11 @@
                     <td>${product.description}</td>
                     <td>${product.price}</td>
                     <td>${product.category.categoryName}</td>
-                    <td><img src="${product.photo}"/></td>
+                    <td><img src="${img}${product.photo}"/></td>
 
-                    <spring:url value="admin/product/showById/${product.id}" var="productUrl" />
-                    <spring:url value="admin/product/delete/${product.id}" var="deleteUrl" />
-                    <spring:url value="admin/product/edit/${product.id}" var="updateUrl" />
+                    <spring:url value="/admin/product/showById/${product.id}" var="productUrl" />
+                    <spring:url value="/admin/product/delete/${product.id}" var="deleteUrl" />
+                    <spring:url value="/admin/product/edit/${product.id}" var="updateUrl" />
 
                     <td>
                         <button class="btn btn-primary" onclick="location.href='${updateUrl}'">
@@ -74,9 +75,11 @@
     </div>
 
     <div class="row">
+        <c:forEach var="page" items="${products}" begin="0" end="10">
         <ul class="pagination">
-            <li href="">1</li>
+            <li href="/admin/product/list"></li>
         </ul>
+        </c:forEach>
     </div>
 
 </div>

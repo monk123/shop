@@ -35,7 +35,6 @@ public class OrderTest {
         order.setOrderDate(new Date());
         order.setAmount(120.59);
         order.setOrderNumber(1);
-        order.setQuantity(3);
 
         orderDao.save(order);
 
@@ -48,7 +47,6 @@ public class OrderTest {
         order.setOrderDate(new Date());
         order.setAmount(120.59);
         order.setOrderNumber(1);
-        order.setQuantity(3);
 
         orderDao.save(order);
 
@@ -66,7 +64,6 @@ public class OrderTest {
         order.setOrderDate(new Date());
         order.setAmount(120.59);
         order.setOrderNumber(1);
-        order.setQuantity(3);
 
         orderDao.save(order);
         Order orderTest = orderDao.getEntityById(order.getId());
@@ -79,10 +76,10 @@ public class OrderTest {
         assertEquals(0, orderDao.getAllEntities().size());
 
         List<Order> orders = Arrays.asList(
-                new Order(new Date(), 3,120.99, 1),
-                new Order(new Date(), 3,120.99, 2),
-                new Order(new Date(), 3,120.99, 3),
-                new Order(new Date(), 3,120.99, 4)
+                new Order(new Date(),120.99, 1),
+                new Order(new Date(), 120.99, 2),
+                new Order(new Date(), 120.99, 3),
+                new Order(new Date(), 120.99, 4)
         );
 
         orders.forEach(order -> orderDao.save(order));
@@ -99,7 +96,6 @@ public class OrderTest {
         order.setOrderDate(new Date());
         order.setAmount(120.59);
         order.setOrderNumber(1);
-        order.setQuantity(3);
 
         orderDao.save(order);
 

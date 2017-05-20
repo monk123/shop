@@ -29,7 +29,7 @@ public class Category extends BaseEntity {
     @Getter @Setter
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     @Getter @Setter
     private Set<Product> products = new HashSet<>();
 

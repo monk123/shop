@@ -5,8 +5,6 @@ import lombok.extern.java.Log;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,8 +23,8 @@ import java.util.List;
  * @param <T>
  * @param <ID>
  */
-@Transactional(propagation = Propagation.REQUIRED) @Log
-public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
+@Log
+public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
     private SessionFactory sessionFactory;
 
     protected Class<? extends T> baseDaoType;
@@ -43,7 +41,7 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
     /**
      * this method returns object of the current session
      */
-    protected Session currentSession() {
+    protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -53,7 +51,7 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
      */
     @Override
     public void save(T t) {
-        currentSession().save(t);
+        getCurrentSession().persist(t);
         log.info(baseDaoType + " successfully save: " + t);
     }
 
@@ -63,15 +61,15 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
      */
     @Override
     public void delete(ID id) {
-        T t = currentSession().get(baseDaoType, id);
+        T t = getCurrentSession().get(baseDaoType, id);
 
         log.info(baseDaoType + " successfully get by id: " + id);
 
         if (t != null) {
 
-            currentSession().delete(t);
+            getCurrentSession().delete(t);
 
-            log.info(baseDaoType + " successfylly delete: " + t);
+            log.info(baseDaoType + " successfully delete: " + t);
         }
     }
 
@@ -82,7 +80,7 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
     @Override
     public void update(T t) {
         log.info(baseDaoType + " successfully update: " + t);
-        currentSession().update(t);
+        getCurrentSession().update(t);
     }
 
     /**
@@ -91,19 +89,14 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
      */
     @Override
     public List<T> getAllEntities() {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<T> criteria = builder.createQuery((Class<T>) baseDaoType);
         Root<T> root = criteria.from((Class<T>) baseDaoType);
         criteria.select(root);
         List<T> list = session.createQuery(criteria).list();
-
-        if (!list.isEmpty() && list != null) {
-            list.forEach(t -> log.info(baseDaoType + " list: " + t));
-            return list;
-        }
-
-        return null;
+        list.forEach(t -> log.info(baseDaoType + " list: " + t));
+        return list;
     }
 
     /**
@@ -113,7 +106,7 @@ public class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
      */
     @Override
     public T getEntityById(ID id) {
-        T t = currentSession().get(baseDaoType, id);
+        T t = getCurrentSession().get(baseDaoType, id);
         log.info(baseDaoType + " successfully get by id: " + id);
         return t;
     }

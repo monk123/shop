@@ -1,10 +1,10 @@
 package com.netcracker;
 
 import com.netcracker.pojo.Product;
-import com.netcracker.service.CategoryService;
-import com.netcracker.service.OrderService;
-import com.netcracker.service.ProductService;
-import com.netcracker.validator.productBuyValidator.ProductBuyFormValidator;
+import com.netcracker.pojo.User;
+import com.netcracker.service.*;
+import com.netcracker.validator.accountUserFormValidator.AccountUserFormValidator;
+import com.netcracker.validator.loginUserFormValidator.LoginUserFormValidator;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller @Log
-@SessionAttributes("product")
 public class UserController {
 
     private ProductService productService;
-
-    private OrderService orderService;
-
     private CategoryService categoryService;
-
-    private ProductBuyFormValidator productBuyFormValidator;
+    private UserService userService;
+    private LoginUserFormValidator loginUserFormValidator;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private AccountUserFormValidator accountUserFormValidator;
 
     @Autowired
-    public void setProductBuyFormValidator(ProductBuyFormValidator productBuyFormValidator) {
-        this.productBuyFormValidator = productBuyFormValidator;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Autowired
@@ -37,34 +37,17 @@ public class UserController {
     }
 
     @Autowired
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
-    @Autowired
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 
-    @RequestMapping(value = "/bucket", method = {RequestMethod.GET, RequestMethod.POST})
-    public String addBucket(@ModelAttribute("product") Product product,
-                            BindingResult bindingResult, Model model) {
-
-        productBuyFormValidator.validate(product, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "user/productInfo";
-        }
-
-
-
-        model.addAttribute("product", product);
-
-        return "user/bucket";
+    @Autowired
+    public void setLoginUserFormValidator(LoginUserFormValidator loginUserFormValidator) {
+        this.loginUserFormValidator = loginUserFormValidator;
     }
 
-    @RequestMapping(value = "product/category/{name}", method = RequestMethod.GET)
-    public String getCategory(@PathVariable String name, Model model) {
+    @RequestMapping(value = "/product/category/{name}", method = RequestMethod.GET)
+    public String getCategory(@PathVariable(value = "name") String name, Model model) {
 
         List<Product> list = productService.getProductByCategoryName(name, 0, 10);
 
@@ -93,7 +76,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/product/info/{id}", method = RequestMethod.GET)
-    public String userProductDataPage(@PathVariable Long id, Model model) {
+    public String userProductDataPage(@PathVariable(value = "id") Long id,  Model model) {
 
         Product product = productService.getEntityById(id);
 
@@ -107,9 +90,47 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value = "/order-details-{number}", method = RequestMethod.GET)
-    public String order(@PathVariable Integer number, Model model) {
+    @RequestMapping(value = "/user/info/edit/{id}", method = RequestMethod.GET)
+    public String userInfoPage(@PathVariable(value = "id") Long id, Model model) {
+        User userForm = null;
 
-        return "user/order";
+        if (id != null) {
+            userForm = userService.getEntityById(id);
+        }
+
+        model.addAttribute("userForm", userForm);
+
+        return "user/userPageForm";
+    }
+
+    @RequestMapping(value = "/user/info/edit/{id}", method = RequestMethod.POST)
+    public String userInfoPage(@PathVariable(value = "id") Long id, @ModelAttribute("userForm") User user,
+                               Model model, BindingResult result) {
+        accountUserFormValidator.validate(user, result);
+
+        if (result.hasErrors()) {
+            return "user/userPageForm";
+        }
+
+        userService.insertInformationAboutUser(user);
+
+        model.addAttribute("user", user);
+
+        return "user/userPage";
+    }
+
+    @RequestMapping(value = "/user/info/{name}", method = RequestMethod.GET)
+    public String getInfo(@PathVariable(value = "name") String name, Model model) {
+        User user = null;
+
+        if (name != null) {
+            user = userService.loadByUsername(name);
+        } else {
+            user = new User();
+        }
+
+        model.addAttribute("user", user);
+
+        return "user/userPage";
     }
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:set var="img" value="/resources/font/"/>
 <html>
 <head>
     <title>show</title>
@@ -40,10 +41,10 @@
 
     <div class="row">
         <label class="col-sm-2"><spring:message code="label_product_photo"/></label>
-        <div class="col-sm-10"><img src="${productForm.photo}"/></div>
+        <div class="col-sm-10"><img src="${img}${productForm.photo}"/></div>
     </div>
 
-    <spring:url value="admin/product/edit/${productForm.id}" var="updateURL"/>
+    <spring:url value="/admin/product/edit/${productForm.id}" var="updateURL"/>
     <button class="btn btn-info" type="submit" onclick="location.href='${updateURL}'">
         <spring:message code="label_product_edit"/>
     </button>

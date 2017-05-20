@@ -1,6 +1,8 @@
 package com.netcracker.validator.accountUserFormValidator;
 
 import com.netcracker.pojo.User;
+import com.netcracker.service.UserService;
+import com.netcracker.validator.valid.ValidatorService;
 import com.netcracker.validator.valid.impl.user.*;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import javax.persistence.ValidationMode;
+
 @Component @Log
 public class AccountUserFormValidator implements Validator {
 
@@ -16,7 +20,7 @@ public class AccountUserFormValidator implements Validator {
     private LastNameValidator lastNameValidator;
     private EmailValidator emailValidator;
     private PhoneValidator phoneValidator;
-    private PasswordValidator passwordValidator;
+    private UserService userService;
 
     @Autowired
     public void setUsernameValidator(UsernameValidator usernameValidator) {
@@ -39,8 +43,8 @@ public class AccountUserFormValidator implements Validator {
     }
 
     @Autowired
-    public void setPasswordValidator(PasswordValidator passwordValidator) {
-        this.passwordValidator = passwordValidator;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -72,27 +76,16 @@ public class AccountUserFormValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "LastName.userForm.error");
         if (!lastNameValidator.valid(user.getLastName())) {
-            errors.rejectValue("lastNAme", "LastName.userForm.error");
+            errors.rejectValue("lastName", "LastName.userForm.error");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Email.userForm.error");
-        if (!emailValidator.valid(user.getEmail())) {
-            errors.rejectValue("email", "Email.userForm.error");
+        if (userService.loadUserByEmail(user.getEmail()) != null) {
+            errors.rejectValue("email", "Duplicate.userForm.email");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "Phone.userForm.error");
         if (!phoneValidator.valid(user.getPhone())) {
-            errors.rejectValue("email", "Phone.userForm.error");
-        }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Password.userForm.error");
-        if (!passwordValidator.valid(user.getPassword())) {
-            errors.rejectValue("password", "Password.userForm.error");
-        }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPasswrod","ConfirmPassword.userForm.error");
-        if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("confirmPassword", "ConfirmPassword.userForm.error");
+            errors.rejectValue("phone", "Phone.userForm.error");
         }
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -28,6 +29,9 @@ public class ProductTest {
 
     @Autowired
     private ProductDao productDao;
+
+    private void doWithProductDao(Consumer<ProductDao> productDaoConsumer) {
+    }
 
     @Test
     public void testSaveProduct() {
@@ -172,21 +176,55 @@ public class ProductTest {
     @Test
     public void testGetProductByCategoryName() {
         List<Product> products = Arrays.asList(
-                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg", new Category("cat1", "desc1")),
-                new Product("Keyboards 2", "desc 2", 24.99, "key.jpg", new Category("cat2", "desc2")),
-                new Product("Keyboards 3", "desc 3", 24.99, "key.jpg", new Category("cat3", "desc3")),
-                new Product("Keyboards 4", "desc 4", 24.99, "key.jpg", new Category("cat1", "desc4")),
-                new Product("Keyboards 5", "desc 5", 24.99, "key.jpg", new Category("cat2", "desc5")),
-                new Product("Keyboards 6", "desc 6", 24.99, "key.jpg", new Category("cat3", "desc6")),
-                new Product("Keyboards 7", "desc 7", 24.99, "key.jpg", new Category("cat1", "desc7"))
+                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 24.99, "key.jpg")
         );
 
         products.forEach(product -> productDao.save(product));
 
         List<Product> productsTest = productDao.paginationProduct(0, 5);
-        // productsTest.forEach(product -> log.info("Products: " + product));
+
         productsTest.forEach(product -> log.info("Products list:" + product));
 
         assertEquals(5, productsTest.size());
+    }
+
+    @Test
+    public void testDescProduct() {
+        List<Product> products = Arrays.asList(
+                new Product("Keyboards 1", "desc 1", 20.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 100.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 55.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 50.99, "key.jpg"),
+                new Product("Keyboards 1", "desc 1", 30.99, "key.jpg")
+        );
+
+        products.forEach(product -> productDao.save(product));
+
+        List<Product> productsTest = productDao.desc(0, 5);
+
+        productsTest.forEach(product -> log.info("Products desc list: " + product));
+    }
+
+    @Test
+    public void testAscProduct() {
+        doWithProductDao((productDao) -> {
+            List<Product> products = Arrays.asList(
+                    new Product("Keyboards 1", "desc 1", 20.99, "key.jpg"),
+                    new Product("Keyboards 1", "desc 1", 100.99, "key.jpg"),
+                    new Product("Keyboards 1", "desc 1", 55.99, "key.jpg"),
+                    new Product("Keyboards 1", "desc 1", 50.99, "key.jpg"),
+                    new Product("Keyboards 1", "desc 1", 30.99, "key.jpg")
+            );
+
+            products.forEach(productDao::save);
+
+            List<Product> productsTest = productDao.asc(0,5);
+
+            productsTest.forEach(product -> log.info("Products asc list: " + product));
+        });
     }
 }

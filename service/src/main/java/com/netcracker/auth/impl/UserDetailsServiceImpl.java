@@ -54,7 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     /**
-     * this method is needed to convert {@link com.netcracker.pojo.User}
+     * this method convert {@link com.netcracker.pojo.User}
      * to {@link org.springframework.security.core.userdetails.User}
      *
      * @param user

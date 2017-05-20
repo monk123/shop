@@ -81,6 +81,7 @@ public class UserTest {
         userDao.save(user);
 
         User userTest = userDao.getEntityById(user.getId());
+
         assertEquals(user, userTest);
     }
 
@@ -136,6 +137,24 @@ public class UserTest {
         User userTest = userDao.loadByUsername("User name find test");
 
         assertEquals(user, userTest);
+    }
+
+    @Test
+    public void testFindUserByEmail() {
+        User user = new User();
+        user.setUsername("User name find test");
+        user.setLastName("User lastName find test");
+        user.setEmail("User email find test");
+        user.setPassword("user password find test");
+        user.setPhone("80297474128");
+
+        userDao.save(user);
+
+        User user1 = userDao.loadUserByEmail("User email find test");
+
+        log.info("User1: " + user1);
+
+        assertEquals(user, user1);
     }
 
     @Test

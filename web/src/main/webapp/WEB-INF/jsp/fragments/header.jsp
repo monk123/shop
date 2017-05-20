@@ -1,7 +1,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <nav class="navbar navbar-inverse">
     <div class="navbar-header" >
         <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -37,12 +39,16 @@
                 <li><a href="?locale=ru"><span class="lang-sm lang-lbl" lang="ru"></span></a> </li>
                 <li class="active"><a href="?locale=en"><span class="lang-sm lang-lbl" lang="en"></span></a></li>
             </c:if>
+
+            <sec:authorize access="isAuthenticated() and hasRole('ROLE_USER')">
             <li>
-                <spring:url value="/bucket" var="bucketURL"/>
+                <spring:url value="/product/bucket" var="bucketURL"/>
                 <button class="btn btn-lg btn-primary" onclick="location.href='${bucketURL}'">
                     <spring:message code="label.user.bucket"/>
                 </button>
             </li>
+            </sec:authorize>
+
             <sec:authorize access="isAuthenticated() and hasRole('ROLE_ADMIN')">
                 <spring:url value="/admin/user/list" var="listURL"/>
             <li>
@@ -51,11 +57,16 @@
                 </button>
             </li>
             </sec:authorize>
+
             <sec:authorize access="isAuthenticated() and hasRole('ROLE_USER')">
                 <li>
-                    <a href="#"><spring:message code="label.user.userInfo"/></a>
+                    <spring:url value="/user/info/${pageContext.request.userPrincipal.name}" var="infoURL"/>
+                    <button class="btn btn-lg btn-info" onclick="location.href='${infoURL}'">
+                        <spring:message code="label.user.info"/>
+                    </button>
                 </li>
             </sec:authorize>
+
             <sec:authorize access="!isAuthenticated()">
                 <li>
                     <spring:url value="/login" var="login"/>
@@ -64,6 +75,7 @@
                     </button>
                 </li>
             </sec:authorize>
+
             <sec:authorize access="isAuthenticated()">
                 <li>
                 <c:if test="${pageContext.request.userPrincipal.name != null}">
@@ -76,6 +88,7 @@
                 </c:if>
                 </li>
             </sec:authorize>
+
         </ul>
     </div>
 </nav>

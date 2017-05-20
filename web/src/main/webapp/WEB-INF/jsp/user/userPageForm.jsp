@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,8 +36,11 @@
             </div>
             <h3><spring:message code="label.user.info"/></h3>
 
-            <form:form class="form-horizontal" role="form" modelAttribute="user" method="post">
+            <spring:url value="/user/info/edit/${userForm.id}" var="userURL"/>
+            <form:form class="form-horizontal" modelAttribute="userForm" method="post" action="${userURL}">
 
+                <!-- id -->
+                <form:hidden path="id"/>
                 <!-- username -->
                 <spring:bind path="username">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -82,78 +86,65 @@
                 </spring:bind>
 
                 <!-- country -->
-                <spring:bind path="addresses.country">
+                <spring:bind path="address.country">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-lg-3 control-label"><spring:message code="label.user.country"/></label>
-                        <form:input path="addresses.country" class="form-control" type="text"/>
-                        <form:errors path="addresses.country"/>
+                        <form:input path="address.country" class="form-control" type="text"/>
+                        <form:errors path="address.country"/>
                     </div>
                 </spring:bind>
 
                 <!-- region -->
-                <spring:bind path="region">
+                <spring:bind path="address.region">
                 <div class="form-group ${status.error ? 'has-error' : ''}">
                     <label class="col-md-3 control-label"><spring:message code="label.user.region"/></label>
                     <div class="col-md-8">
-                        <form:input class="form-control" type="text" path="addresses.region"/>
-                        <form:errors path="addresses.region"/>
+                        <form:input class="form-control" type="text" path="address.region"/>
+                        <form:errors path="address.region"/>
                     </div>
                 </div>
                 </spring:bind>
 
                 <!-- city -->
-                <spring:bind path="city">
+                <spring:bind path="address.city">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-md-3 control-label"><spring:message code="label.user.city"/></label>
                         <div class="col-md-8">
-                            <form:input class="form-control" type="text" path="addresses.city"/>
-                            <form:errors path="addresses.city"/>
+                            <form:input class="form-control" type="text" path="address.city"/>
+                            <form:errors path="address.city"/>
                         </div>
                     </div>
                 </spring:bind>
 
                 <!-- street -->
-                <spring:bind path="street">
+                <spring:bind path="address.street">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label class="col-md-3 control-label"><spring:message code="label.user.street"/></label>
                         <div class="col-md-8">
-                            <form:input class="form-control" type="text" path="addresses.street"/>
-                            <form:errors path="addresses.street"/>
+                            <form:input class="form-control" type="text" path="address.street"/>
+                            <form:errors path="address.street"/>
                         </div>
                     </div>
                 </spring:bind>
 
-                <!-- password -->
-                <spring:bind path="password">
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <label class="col-md-3 control-label"><spring:message code="label.user.password"/></label>
-                    <div class="col-md-8">
-                        <form:input path="password" class="form-control" type="password"/>
-                        <form:errors path="password"/>
-                    </div>
-                </div>
-                </spring:bind>
+                <form:hidden path="password"/>
 
-                <!-- confirmPassword -->
-                <spring:bind path="confirmPassword">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label class="col-md-3 control-label"><spring:message code="label.user.confirmPassword"/></label>
-                        <div class="col-md-8">
-                            <form:input path="confirmPassword" class="form-control" type="password"/>
-                            <form:errors path="confirmPassword"/>
-                        </div>
-                    </div>
-                </spring:bind>
+                <form:hidden path="confirmPassword"/>
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
-                    <div class="col-md-8">
-                        <input type="button" class="btn btn-primary" value="Save Changes">
-                        <span></span>
-                        <input type="reset" class="btn btn-default" value="Cancel">
-                    </div>
-                </div>
 
+                    <label class="col-md-3 control-label"></label>
+
+                    <div class="col-md-8">
+                        <c:if test="${!empty userForm.id}">
+                            <input class="btn btn-primary" role="button" type="submit" value="Save Changes"/>
+                        </c:if>
+                        <c:if test="${empty userForm.id}">
+                            <input class="btn btn-primary btn-block" role="button" type="submit" value="Cancel"/>
+                        </c:if>
+                    </div>
+
+                </div>
             </form:form>
         </div>
     </div>

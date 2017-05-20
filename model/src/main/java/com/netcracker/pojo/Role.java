@@ -7,10 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.log4j.Logger;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +28,7 @@ public class Role extends BaseEntity {
     @Getter @Setter
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
     @Getter @Setter
     private Set<User> users = new HashSet<>();
 

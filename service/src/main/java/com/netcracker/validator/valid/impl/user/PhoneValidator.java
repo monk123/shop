@@ -12,7 +12,10 @@ public class PhoneValidator implements ValidatorService {
 
     private Pattern pattern;
 
-    private static final String PHONE_PATTERN = "d{7}";
+    /**
+     * регулярное выражение позволяет записать мобильный телефон в виде +375(29)747-41-27
+     */
+    private static final String PHONE_PATTERN = "[\\+]\\d{3}[\\(]\\d{2}[\\)]\\d{3}[\\-]\\d{2}[\\-]\\d{2}";
 
     public PhoneValidator() {
         this.pattern = Pattern.compile(PHONE_PATTERN);

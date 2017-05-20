@@ -30,7 +30,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
      */
     @Override
     public User loadByUsername(String username) {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> root = criteria.from(User.class);
@@ -38,7 +38,29 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
         List<User> users = session.createQuery(criteria).list();
 
         if (users != null && !users.isEmpty()) {
-            log.info("User successfuly find: " + users.get(0));
+            log.info("User successfully find by username: " + users.get(0));
+            return users.get(0);
+        }
+
+        return null;
+    }
+
+    /**
+     * this method needs to load user by email
+     * @param email
+     * @return
+     */
+    @Override
+    public User loadUserByEmail(String email) {
+        Session session = getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+        criteria.select(root).where(builder.equal(root.get("email"), email));
+        List<User> users = session.createQuery(criteria).list();
+
+        if (users != null && !users.isEmpty()) {
+            log.info("User successfully find by email: " + users.get(0));
             return users.get(0);
         }
 
@@ -53,7 +75,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
      */
     @Override
     public List<User> paginationUser(int firstValue, int maxValue) {
-        Session session = currentSession();
+        Session session = getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> root = criteria.from(User.class);

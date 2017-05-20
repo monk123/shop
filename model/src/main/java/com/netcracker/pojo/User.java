@@ -2,6 +2,7 @@ package com.netcracker.pojo;
 
 import lombok.*;
 import lombok.extern.java.Log;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class User extends BaseEntity {
 
     @Column(name = "EMAIL")
     @Getter @Setter
+    @Email
     private String email;
 
     @Column(name = "PHONE")
@@ -43,7 +45,8 @@ public class User extends BaseEntity {
     @Getter @Setter
     private String confirmPassword;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "ADDRESS_ID")
     @Getter @Setter
     private Address address;
 
@@ -63,6 +66,14 @@ public class User extends BaseEntity {
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+
+    public User(String username, String lastName, String email, String phone, Address address) {
+        this.username = username;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
     }
 
     public User(String username, String lastName, String email, String phone, String password, String confirmPassword, Address address) {

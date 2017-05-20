@@ -29,10 +29,6 @@ public class Order extends BaseEntity {
     @DateTimeFormat(pattern = "M/dd/yyyy hh:mm:ss a")
     private Date orderDate;
 
-    @Column(name = "QUANTITY")
-    @Getter @Setter
-    private int quantity;
-
     @Column(name = "AMOUNT")
     @Getter @Setter
     private double amount;
@@ -46,17 +42,22 @@ public class Order extends BaseEntity {
     @Getter @Setter
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "orders_has_products", joinColumns = @JoinColumn(name = "ORDER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    @OneToMany(mappedBy = "order")
     @Getter @Setter
-    private Set<Product> products = new HashSet<>();
+    private Set<OrderDetail> products = new HashSet<>();
 
-    public Order(Date orderDate, int quantity, double amount, int orderNumber) {
+    public Order(Date orderDate, double amount, int orderNumber) {
         this.orderDate = orderDate;
-        this.quantity = quantity;
         this.amount = amount;
         this.orderNumber = orderNumber;
+    }
+
+    public Order(Date orderDate, double amount, int orderNumber, User user, Set<OrderDetail> products) {
+        this.orderDate = orderDate;
+        this.amount = amount;
+        this.orderNumber = orderNumber;
+        this.user = user;
+        this.products = products;
     }
 
     @Override
@@ -67,7 +68,6 @@ public class Order extends BaseEntity {
 
         Order order = (Order) o;
 
-        if (quantity != order.quantity) return false;
         if (Double.compare(order.amount, amount) != 0) return false;
         if (orderNumber != order.orderNumber) return false;
         return orderDate != null ? orderDate.equals(order.orderDate) : order.orderDate == null;
@@ -78,7 +78,6 @@ public class Order extends BaseEntity {
         int result = super.hashCode();
         long temp;
         result = 31 * result + (orderDate != null ? orderDate.hashCode() : 0);
-        result = 31 * result + quantity;
         temp = Double.doubleToLongBits(amount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + orderNumber;
@@ -89,7 +88,6 @@ public class Order extends BaseEntity {
     public String toString() {
         return "Order{" +
                 "orderDate=" + orderDate +
-                ", quantity=" + quantity +
                 ", amount=" + amount +
                 ", orderNumber=" + orderNumber +
                 '}';

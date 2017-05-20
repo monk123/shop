@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Simple JavaBean object that represents an Address
@@ -35,6 +37,10 @@ public class Address extends BaseEntity {
     @Column(name = "STREET")
     @Getter @Setter
     private String street;
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
+    @Getter @Setter
+    private Set<User> users = new HashSet<>();
 
     public Address(String country, String region, String city, String street) {
         this.country = country;
