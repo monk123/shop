@@ -7,6 +7,7 @@
 <title>Login</title>
 
 <link href="../../../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../../resources/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="../../../resources/css/index.css" rel="stylesheet">
 <link href="../../../resources/bootstrap/languages.min.css" rel="stylesheet">
 <source src="../../../resources/bootstrap/languages.png">

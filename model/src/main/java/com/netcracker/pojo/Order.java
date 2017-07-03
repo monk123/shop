@@ -17,11 +17,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
+@NoArgsConstructor
+@Log
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
-    private static final Long serialVersionUID = 8L;
+
+    private static final long serialVersionUID = -2706256391940857705L;
 
     @Column(name = "ORDER_DATE")
     @Getter @Setter
@@ -42,22 +44,16 @@ public class Order extends BaseEntity {
     @Getter @Setter
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @ManyToMany
+    @JoinTable(name = "ORDERS_HAS_PRODUCTS", joinColumns = @JoinColumn(name = "ORDER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
     @Getter @Setter
-    private Set<OrderDetail> products = new HashSet<>();
+    private Set<Product> products = new HashSet<>();
 
     public Order(Date orderDate, double amount, int orderNumber) {
         this.orderDate = orderDate;
         this.amount = amount;
         this.orderNumber = orderNumber;
-    }
-
-    public Order(Date orderDate, double amount, int orderNumber, User user, Set<OrderDetail> products) {
-        this.orderDate = orderDate;
-        this.amount = amount;
-        this.orderNumber = orderNumber;
-        this.user = user;
-        this.products = products;
     }
 
     @Override

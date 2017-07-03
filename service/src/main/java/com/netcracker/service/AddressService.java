@@ -6,10 +6,4 @@ import com.netcracker.pojo.User;
 import java.util.List;
 
 public interface AddressService extends BaseService<Address, Long> {
-
-    List getAddressDataByUserId(Long id);
-
-    String getAddressByUsername(String username);
-
-    void add(User user);
 }

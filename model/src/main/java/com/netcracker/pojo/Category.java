@@ -1,9 +1,7 @@
 package com.netcracker.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.java.Log;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,10 +14,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@Log @NoArgsConstructor
-@Entity @Table(name = "categories")
+@Log
+@NoArgsConstructor
+@Entity
+@Table(name = "categories")
 public class Category extends BaseEntity {
-    private static final Long serialVersionUID = 6L;
+
+    private static final long serialVersionUID = 6139255037128362425L;
 
     @Column(name = "CATEGORY_NAME")
     @Getter @Setter
@@ -33,28 +34,24 @@ public class Category extends BaseEntity {
     @Getter @Setter
     private Set<Product> products = new HashSet<>();
 
-    public Category(String categoryName, String description) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
-        this.description = description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
-        if (!super.equals(o)) return false;
 
         Category category = (Category) o;
 
-        if (!categoryName.equals(category.categoryName)) return false;
-        return description.equals(category.description);
+        return categoryName != null ? categoryName.equals(category.categoryName) : category.categoryName == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + categoryName.hashCode();
-        result = 31 * result + description.hashCode();
         return result;
     }
 
@@ -62,7 +59,6 @@ public class Category extends BaseEntity {
     public String toString() {
         return "Category{" +
                 "categoryName='" + categoryName + '\'' +
-                ", description='" + description + '\'' +
                 '}';
     }
 

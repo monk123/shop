@@ -1,22 +1,30 @@
 package com.netcracker.dao;
 
+import com.netcracker.pojo.Category;
 import com.netcracker.pojo.Product;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface ProductDao extends BaseDao<Product, Long> {
 
     List<Product> paginationProduct(int firstValue, int maxValue);
 
-    Product findProduct(String firstName);
+    List<Product> getProductByCategoryName(String name, int firstValue, int maxValue);
 
-    List<Product> desc(int first, int second);
+    List<Product> getProductByCategoryNameSize(String name);
 
-    List<Product> asc(int first, int second);
+    List<Product> getProductByPrice(double priceFrom, double priceTo,
+                                    int firstValue, int secondValue);
 
-    List<Product> between(int first, int second, int startPrice, int finishPrice);
+    List<Product> getProductByPriceAndCategory(String category, double priceFrom, double priceTo,
+                                               int firstValue, int secondValue);
+
+    List<Product> findProduct(String name, int page, int total);
+
+    List<Product> getProductByPriceSize(double priceFrom, double priceTo);
+
+    List<Product> findProductSize(String name);
+
+    List<Product> getProductByOrderId(Long id);
 }

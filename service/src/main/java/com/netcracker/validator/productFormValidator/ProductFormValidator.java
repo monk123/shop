@@ -1,9 +1,9 @@
 package com.netcracker.validator.productFormValidator;
 
 import com.netcracker.pojo.Product;
-import com.netcracker.service.ProductService;
-import com.netcracker.validator.valid.ValidatorService;
-import com.netcracker.validator.valid.impl.product.ProductNameValidator;
+import com.netcracker.validator.validate.impl.product.CategoryValidator;
+import com.netcracker.validator.validate.impl.product.PriceValidator;
+import com.netcracker.validator.validate.impl.product.ProductNameValidator;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,14 +11,28 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-@Component @Log
+/**
+ * Implementation of {@link Validator} interface
+ *
+ * @author Ayupov Vadim
+ */
+
+@Log
+@Component
 public class ProductFormValidator implements Validator {
 
     private ProductNameValidator productNameValidator;
+    private PriceValidator priceValidator;
+    private CategoryValidator categoryValidator;
 
     @Autowired
-    public void setProductNameValidator(ProductNameValidator productNameValidator) {
+    public ProductFormValidator(ProductNameValidator productNameValidator,
+                                PriceValidator priceValidator,
+                                CategoryValidator categoryValidator) {
+
         this.productNameValidator = productNameValidator;
+        this.priceValidator = priceValidator;
+        this.categoryValidator = categoryValidator;
     }
 
     /**
@@ -43,29 +57,35 @@ public class ProductFormValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         Product product = (Product) obj;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.productForm.name");
-        if (product.getName() == null) {
-            errors.rejectValue("name", "NotEmpty.productName.name");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Required");
+        if (!productNameValidator.valid(product.getName())) {
+            errors.rejectValue("name", "Name.productForm.error");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "NotEmpty.productForm.description");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "Required");
         if (product.getDescription() == null) {
             errors.rejectValue("description", "NotEmpty.productForm.description");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty.productForm.price");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "Required");
+        if (!priceValidator.valid(String.valueOf(product.getPrice()))) {
+            errors.rejectValue("price", "Price.productForm.error");
+        }
         if (product.getPrice() == null || product.getPrice() < 0) {
             errors.rejectValue("price", "NotEmpty.productForm.price");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "photo", "NotEmpty.productForm.photo");
-        if (product.getPhoto() == null) {
-            errors.rejectValue("photo", "NotEmpty.productForm.photo");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "category", "Required");
+        if (!categoryValidator.valid(product.getCategory().getCategoryName())) {
+            errors.rejectValue("category", "Category.productForm.error");
         }
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "category", "NotEmpty.productForm.category");
         if (product.getCategory().getCategoryName() == null) {
             errors.rejectValue("category", "NotEmpty.productForm.category");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "photo", "Required");
+        if (product.getPhoto() == null) {
+            errors.rejectValue("photo", "NotEmpty.productForm.photo");
         }
     }
 }

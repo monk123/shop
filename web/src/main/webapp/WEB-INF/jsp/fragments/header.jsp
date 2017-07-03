@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="s" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <nav class="navbar navbar-inverse">
@@ -13,18 +15,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<c:url value="/welcome"/>"><spring:message code="label.shop.name"/></a>
+        <a class="navbar-brand" href="<c:url value="/welcome/${1}"/>"><spring:message code="label.shop.name"/></a>
     </div>
     <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-            <li>
-                <a href="#"><spring:message code="label_shop_about"/></a>
-            </li>
-            <li>
-                <c:url var="product" value="/welcome"/>
-                <a href="${product}"><spring:message code="label_shop_product"/></a>
-            </li>
-        </ul>
 
         <ul class="nav navbar-nav navbar-right">
 
@@ -43,14 +36,16 @@
             <sec:authorize access="isAuthenticated() and hasRole('ROLE_USER')">
             <li>
                 <spring:url value="/product/bucket" var="bucketURL"/>
-                <button class="btn btn-lg btn-primary" onclick="location.href='${bucketURL}'">
-                    <spring:message code="label.user.bucket"/>
-                </button>
+                <li>
+                    <button class="btn btn-success btn-lg" onclick="location.href='${bucketURL}'">
+                        <spring:message code="label.user.bucket"/>
+                    </button>
+                </li>
             </li>
             </sec:authorize>
 
             <sec:authorize access="isAuthenticated() and hasRole('ROLE_ADMIN')">
-                <spring:url value="/admin/user/list" var="listURL"/>
+                <spring:url value="/admin/user/list/${1}" var="listURL"/>
             <li>
                 <button class="btn btn-lg btn-info" onclick="location.href='${listURL}'">
                     <spring:message code="label.user.list"/>
@@ -58,20 +53,20 @@
             </li>
             </sec:authorize>
 
-            <sec:authorize access="isAuthenticated() and hasRole('ROLE_USER')">
+            <sec:authorize access="isAuthenticated() and hasRole('ROLE_ADMIN')">
+                <spring:url value="/admin/product/list/${1}" var="listURL"/>
                 <li>
-                    <spring:url value="/user/info/${pageContext.request.userPrincipal.name}" var="infoURL"/>
-                    <button class="btn btn-lg btn-info" onclick="location.href='${infoURL}'">
-                        <spring:message code="label.user.info"/>
+                    <button class="btn btn-lg btn-info" onclick="location.href='${listURL}'">
+                        <spring:message code="label.product.list"/>
                     </button>
                 </li>
             </sec:authorize>
 
-            <sec:authorize access="!isAuthenticated()">
+            <sec:authorize access="isAuthenticated() and hasRole('ROLE_USER')">
+                <spring:url value="/welcome/user/${pageContext.request.userPrincipal.name}" var="infoURL"/>
                 <li>
-                    <spring:url value="/login" var="login"/>
-                    <button  class="btn btn-lg btn-success" onclick="location.href='${login}'" role="button">
-                        <spring:message code="label_locale_login"/>
+                    <button class="btn btn-primary btn-lg" onclick="location.href='${infoURL}'">
+                        <spring:message code="label.user.user.info"/>
                     </button>
                 </li>
             </sec:authorize>
@@ -82,9 +77,11 @@
                     <form id="logoutForm" method="post" action="${contextPath}/logout">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
-                    <a class="btn btn-lg btn-danger" onclick="document.forms['logoutForm'].submit()" role="button">
-                        <spring:message code="label_locale_logout"/>
-                    </a>
+                    <li>
+                        <button class="btn btn-lg btn-danger" onclick="document.forms['logoutForm'].submit()">
+                            <spring:message code="label.locale.logout"/>
+                        </button>
+                    </li>
                 </c:if>
                 </li>
             </sec:authorize>

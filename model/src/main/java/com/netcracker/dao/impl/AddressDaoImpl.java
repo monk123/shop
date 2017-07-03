@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of {@link AddressDao} interface
@@ -23,24 +24,4 @@ import java.util.List;
 @Log
 @Repository
 public class AddressDaoImpl extends BaseDaoImpl<Address, Long> implements AddressDao {
-
-    @Override
-    public List<String> getAddressDataByUserId(Long id) {
-        Session session = getCurrentSession();
-        Query query = session.createQuery("select a from Address a where user.id=:id")
-                .setParameter("id", id);
-        return query.getResultList();
-    }
-
-    @Override
-    public String getAddressByUsername(String username) {
-        Session session = getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<String> criteria = builder.createQuery(String.class);
-        Root<Address> root = criteria.from(Address.class);
-        criteria.select(root.get("country"))
-                .where(builder.equal(root.get("username"), username));
-
-        return session.createQuery(criteria).list().get(0);
-    }
 }

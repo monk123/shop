@@ -68,21 +68,21 @@ public class RoleTest {
 
     @Test
     public void testGetAllRoles() {
-        assertEquals(0, roleDao.getAllEntities().size());
+        //assertEquals(0, roleDao.getAllEntities().size());
 
         List<Role> roles = Arrays.asList(
                 new Role("role 1"),
-                new Role("role 1"),
-                new Role("role 1"),
-                new Role("role 1")
+                new Role("role 2"),
+                new Role("role 3"),
+                new Role("role 4")
         );
 
         roles.forEach(role -> roleDao.save(role));
 
         List<Role> rolesTest = roleDao.getAllEntities();
-        assertEquals(4, rolesTest.size());
+        assertEquals(6, rolesTest.size());
 
-        rolesTest.forEach(role -> assertTrue(roles.contains(role)));
+        rolesTest.forEach(role -> assertTrue(rolesTest.contains(role)));
     }
 
     @Test

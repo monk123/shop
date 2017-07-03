@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -23,11 +24,6 @@ import java.util.List;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
 
-    /**
-     * this method is needed to find user by name
-     * @param username
-     * @return
-     */
     @Override
     public User loadByUsername(String username) {
         Session session = getCurrentSession();
@@ -36,20 +32,14 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
         Root<User> root = criteria.from(User.class);
         criteria.select(root).where(builder.equal(root.get("username"), username));
         List<User> users = session.createQuery(criteria).list();
-
         if (users != null && !users.isEmpty()) {
-            log.info("User successfully find by username: " + users.get(0));
+            log.info("User successfully find: " + users.get(0));
             return users.get(0);
         }
 
         return null;
     }
 
-    /**
-     * this method needs to load user by email
-     * @param email
-     * @return
-     */
     @Override
     public User loadUserByEmail(String email) {
         Session session = getCurrentSession();
@@ -67,12 +57,6 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
         return null;
     }
 
-    /**
-     * shows a limited number of users depending on the parameters
-     * @param firstValue
-     * @param maxValue
-     * @return
-     */
     @Override
     public List<User> paginationUser(int firstValue, int maxValue) {
         Session session = getCurrentSession();
@@ -82,7 +66,7 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
         criteria.select(root);
 
         List<User> users = session.createQuery(criteria)
-                .setFirstResult((firstValue - 1) * maxValue)
+                .setFirstResult(firstValue - 1)
                 .setMaxResults(maxValue)
                 .list();
 

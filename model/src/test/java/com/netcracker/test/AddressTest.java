@@ -113,8 +113,4 @@ public class AddressTest {
 
         assertNull(addressDao.getEntityById(address.getId()));
     }
-
-    @Test
-    public void testGetAddressByUsername() {
-    }
 }

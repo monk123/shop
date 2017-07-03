@@ -1,7 +1,5 @@
 package com.netcracker.dao;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 import java.io.Serializable;
 import java.util.List;
 

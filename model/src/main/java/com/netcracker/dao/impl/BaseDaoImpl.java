@@ -5,6 +5,7 @@ import lombok.extern.java.Log;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,21 +24,25 @@ import java.util.List;
  * @param <T>
  * @param <ID>
  */
+
 @Log
+@Repository
 public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
+
     private SessionFactory sessionFactory;
 
-    protected Class<? extends T> baseDaoType;
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    private final Class<? extends T> baseDaoType;
 
     public BaseDaoImpl() {
         this.baseDaoType = (Class<T>) ((ParameterizedType)
                 getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
     /**
      * this method returns object of the current session
      */
@@ -80,7 +85,7 @@ public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao
     @Override
     public void update(T t) {
         log.info(baseDaoType + " successfully update: " + t);
-        getCurrentSession().update(t);
+        getCurrentSession().merge(t);
     }
 
     /**

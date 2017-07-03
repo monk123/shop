@@ -12,12 +12,9 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath:service-spring.xml"/>
-
     <import resource="classpath:model-spring.xml"/>
 
     <context:component-scan base-package="com.netcracker"/>
-
-    <mvc:default-servlet-handler/>
 
     <mvc:annotation-driven/>
 
@@ -30,23 +27,18 @@
 
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:maxUploadSize="268435456"
-          p:defaultEncoding="UTF-8"/>
+          p:maxUploadSize="268435456"/>
 
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
           p:defaultLocale="en"
           p:cookieName="locale"/>
 
-    <bean id="localChangeInterceptors"
-          class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
-          p:paramName="locale"/>
-
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-          p:basenames="classpath:i18n/messages, classpath:validator, classpath:productValidator"
-          p:defaultEncoding="UTF-8"
-          p:fallbackToSystemLocale="false"/>
+          p:basenames="classpath:i18n/messages, classpath:validator"
+          p:defaultEncoding="UTF-8">
+    </bean>
 
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"

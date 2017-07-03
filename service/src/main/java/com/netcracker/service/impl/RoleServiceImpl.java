@@ -15,7 +15,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements Role
     private RoleDao roleDao;
 
     @Autowired
-    public void setRoleDao(RoleDao roleDao) {
+    public RoleServiceImpl(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
 }

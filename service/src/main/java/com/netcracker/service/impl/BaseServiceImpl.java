@@ -10,16 +10,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @Log
-public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T,ID> {
+public abstract class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T,ID> {
 
     private BaseDao<T, ID> baseDao;
-
-    public BaseServiceImpl() {
-    }
 
     @Autowired
     public void setBaseDao(BaseDao<T, ID> baseDao) {
         this.baseDao = baseDao;
+    }
+
+    public BaseServiceImpl() {
     }
 
     @Override
@@ -44,13 +44,13 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<T> getAllEntities() {
         return baseDao.getAllEntities();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public T getEntityById(ID id) {
         return baseDao.getEntityById(id);
     }

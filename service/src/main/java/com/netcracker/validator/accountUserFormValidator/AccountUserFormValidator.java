@@ -2,8 +2,11 @@ package com.netcracker.validator.accountUserFormValidator;
 
 import com.netcracker.pojo.User;
 import com.netcracker.service.UserService;
-import com.netcracker.validator.valid.ValidatorService;
-import com.netcracker.validator.valid.impl.user.*;
+import com.netcracker.validator.validate.impl.address.CityValidator;
+import com.netcracker.validator.validate.impl.address.CountryValidator;
+import com.netcracker.validator.validate.impl.address.RegionValidator;
+import com.netcracker.validator.validate.impl.address.StreetValidator;
+import com.netcracker.validator.validate.impl.user.*;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,9 +14,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import javax.persistence.ValidationMode;
+/**
+ * Implementation of {@link Validator} interface
+ *
+ * @author Ayupov Vadim
+ */
 
-@Component @Log
+@Log
+@Component
 public class AccountUserFormValidator implements Validator {
 
     private UsernameValidator usernameValidator;
@@ -21,30 +29,31 @@ public class AccountUserFormValidator implements Validator {
     private EmailValidator emailValidator;
     private PhoneValidator phoneValidator;
     private UserService userService;
+    private CountryValidator countryValidator;
+    private RegionValidator regionValidator;
+    private CityValidator cityValidator;
+    private StreetValidator streetValidator;
 
     @Autowired
-    public void setUsernameValidator(UsernameValidator usernameValidator) {
+    public AccountUserFormValidator(UsernameValidator usernameValidator,
+                                    LastNameValidator lastNameValidator,
+                                    EmailValidator emailValidator,
+                                    PhoneValidator phoneValidator,
+                                    UserService userService,
+                                    CountryValidator countryValidator,
+                                    RegionValidator regionValidator,
+                                    CityValidator cityValidator,
+                                    StreetValidator streetValidator) {
+
         this.usernameValidator = usernameValidator;
-    }
-
-    @Autowired
-    public void setLastNameValidator(LastNameValidator lastNameValidator) {
         this.lastNameValidator = lastNameValidator;
-    }
-
-    @Autowired
-    public void setEmailValidator(EmailValidator emailValidator) {
         this.emailValidator = emailValidator;
-    }
-
-    @Autowired
-    public void setPhoneValidator(PhoneValidator phoneValidator) {
         this.phoneValidator = phoneValidator;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
         this.userService = userService;
+        this.countryValidator = countryValidator;
+        this.regionValidator = regionValidator;
+        this.cityValidator = cityValidator;
+        this.streetValidator = streetValidator;
     }
 
     /**
@@ -69,23 +78,44 @@ public class AccountUserFormValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         User user = (User) obj;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Username.userForm.error");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Required");
         if (!usernameValidator.valid(user.getUsername())) {
             errors.rejectValue("username", "Username.userForm.error");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "LastName.userForm.error");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "Required");
         if (!lastNameValidator.valid(user.getLastName())) {
             errors.rejectValue("lastName", "LastName.userForm.error");
         }
 
-        if (userService.loadUserByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "Duplicate.userForm.email");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Required");
+        if (!emailValidator.valid(user.getEmail())) {
+            errors.rejectValue("email", "Email.userForm.error");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "Phone.userForm.error");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "Required");
         if (!phoneValidator.valid(user.getPhone())) {
             errors.rejectValue("phone", "Phone.userForm.error");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.country", "Required");
+        if (!countryValidator.valid(user.getAddress().getCountry())) {
+            errors.rejectValue("address.country", "Country.userForm.error");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.region", "Required");
+        if (!regionValidator.valid(user.getAddress().getRegion())) {
+            errors.rejectValue("address.region", "Region.userForm.error");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.city", "Required");
+        if (!cityValidator.valid(user.getAddress().getCity())) {
+            errors.rejectValue("address.city", "City.userForm.error");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "address.street", "Required");
+        if (!streetValidator.valid(user.getAddress().getStreet())) {
+            errors.rejectValue("address.street", "Street.userForm.error");
         }
     }
 }

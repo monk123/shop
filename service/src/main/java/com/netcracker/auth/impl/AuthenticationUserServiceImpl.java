@@ -20,8 +20,8 @@ import java.util.Set;
  * @author Ayupov Vadim
  */
 
-@Service @Log
-@Transactional
+@Log
+@Service
 public class AuthenticationUserServiceImpl implements AuthenticationUserService {
 
     private UserDao userDao;
@@ -29,25 +29,16 @@ public class AuthenticationUserServiceImpl implements AuthenticationUserService 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public AuthenticationUserServiceImpl(UserDao userDao, RoleDao roleDao,
+                                         BCryptPasswordEncoder bCryptPasswordEncoder) {
+
         this.userDao = userDao;
-    }
-
-    @Autowired
-    public void setRoleDao(RoleDao roleDao) {
         this.roleDao = roleDao;
-    }
-
-    @Autowired
-    public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    /**
-     * this method is needed to save user
-     * @param user
-     */
     @Override
+    @Transactional
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -57,12 +48,8 @@ public class AuthenticationUserServiceImpl implements AuthenticationUserService 
         log.info("User successfully save: " + user);
     }
 
-    /**
-     *
-     * @param username
-     * @return
-     */
     @Override
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userDao.loadByUsername(username);
     }

@@ -15,38 +15,48 @@
 <div class="container">
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_id"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.id"/></label>
         <div class="col-sm-10">${productForm.id}</div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_name"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.name"/></label>
         <div class="col-sm-10">${productForm.name}</div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_category"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.category"/></label>
         <div class="col-sm-10">${productForm.category.categoryName}</div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_description"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.description"/></label>
         <div class="col-sm-10">${productForm.description}</div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_price"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.quantity"/></label>
+        <div class="col-sm-10">${productForm.count}</div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2"><spring:message code="label.product.price"/></label>
         <div class="col-sm-10">${productForm.price}</div>
     </div>
 
     <div class="row">
-        <label class="col-sm-2"><spring:message code="label_product_photo"/></label>
+        <label class="col-sm-2"><spring:message code="label.product.photo"/></label>
         <div class="col-sm-10"><img src="${img}${productForm.photo}"/></div>
     </div>
 
     <spring:url value="/admin/product/edit/${productForm.id}" var="updateURL"/>
     <button class="btn btn-info" type="submit" onclick="location.href='${updateURL}'">
-        <spring:message code="label_product_edit"/>
+        <spring:message code="label.product.edit"/>
+    </button>
+
+    <spring:url value="/admin/product/list/${1}" var="cancelURL"/>
+    <button class="btn btn-info" type="submit" onclick="location.href='${cancelURL}'">
+        <spring:message code="label.button.cancel"/>
     </button>
 
 </div>

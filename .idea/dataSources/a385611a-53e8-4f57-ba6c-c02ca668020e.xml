@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="shop-online-test@localhost">
-  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.2">
     <root id="1"/>
     <schema id="2" parent="1" name="shop-online-test">
       <Current>1</Current>
@@ -19,268 +19,348 @@
     <schema id="13" parent="1" name="shop-online"/>
     <schema id="14" parent="1" name="spring"/>
     <schema id="15" parent="1" name="testdb"/>
-    <table id="16" parent="2" name="addresses"/>
-    <table id="17" parent="2" name="categories"/>
-    <table id="18" parent="2" name="orders"/>
-    <table id="19" parent="2" name="orders_has_products"/>
-    <table id="20" parent="2" name="products"/>
-    <table id="21" parent="2" name="roles"/>
-    <table id="22" parent="2" name="user_has_roles"/>
-    <table id="23" parent="2" name="users"/>
-    <column id="24" parent="16" name="id">
+    <schema id="16" parent="1" name="dress_store_last"/>
+    <schema id="17" parent="1" name="online_shop_db"/>
+    <table id="18" parent="2" name="addresses"/>
+    <table id="19" parent="2" name="categories"/>
+    <table id="20" parent="2" name="order_details"/>
+    <table id="21" parent="2" name="orders"/>
+    <table id="22" parent="2" name="orders_has_products"/>
+    <table id="23" parent="2" name="products"/>
+    <table id="24" parent="2" name="roles"/>
+    <table id="25" parent="2" name="user_has_roles"/>
+    <table id="26" parent="2" name="users"/>
+    <column id="27" parent="18" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="25" parent="16" name="CITY">
+    <column id="28" parent="18" name="CITY">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="26" parent="16" name="COUNTRY">
+    <column id="29" parent="18" name="COUNTRY">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="27" parent="16" name="REGION">
+    <column id="30" parent="18" name="REGION">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="28" parent="16" name="STREET">
+    <column id="31" parent="18" name="STREET">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="29" parent="16" name="USER_ID">
+    <column id="32" parent="18" name="USER_ID">
       <Position>6</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <index id="30" parent="16" name="FKhlpwtnk9kxvtfxkljj84epkpu">
+    <index id="33" parent="18" name="FKhlpwtnk9kxvtfxkljj84epkpu">
       <ColNames>USER_ID</ColNames>
     </index>
-    <key id="31" parent="16" name="PRIMARY">
+    <key id="34" parent="18" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="32" parent="16" name="FKhlpwtnk9kxvtfxkljj84epkpu">
+    <foreign-key id="35" parent="18" name="FKhlpwtnk9kxvtfxkljj84epkpu">
       <ColNames>USER_ID</ColNames>
       <RefSchemaName>shop-online-test</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="33" parent="17" name="id">
+    <column id="36" parent="19" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="34" parent="17" name="CATEGORY_NAME">
+    <column id="37" parent="19" name="CATEGORY_NAME">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="35" parent="17" name="DESCRIPTION">
+    <column id="38" parent="19" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="36" parent="17" name="PRIMARY">
+    <key id="39" parent="19" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="37" parent="18" name="id">
+    <column id="40" parent="20" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="38" parent="18" name="AMOUNT">
+    <column id="41" parent="20" name="count">
       <Position>2</Position>
-      <DataType>double|0</DataType>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <column id="39" parent="18" name="ORDER_DATE">
+    <column id="42" parent="20" name="ORDER_ID">
       <Position>3</Position>
-      <DataType>datetime|0</DataType>
+      <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="40" parent="18" name="ORDER_NUMBER">
+    <column id="43" parent="20" name="PRODUCT_ID">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <column id="41" parent="18" name="QUANTITY">
-      <Position>5</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <column id="42" parent="18" name="USER_ID">
-      <Position>6</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <index id="43" parent="18" name="FKodpu7ljn8tsfvwhk95kp4nugq">
-      <ColNames>USER_ID</ColNames>
+    <index id="44" parent="20" name="FK3o61lxi3oa37jeics0y37kem0">
+      <ColNames>ORDER_ID</ColNames>
     </index>
-    <key id="44" parent="18" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="45" parent="18" name="FKodpu7ljn8tsfvwhk95kp4nugq">
-      <ColNames>USER_ID</ColNames>
-      <RefSchemaName>shop-online-test</RefSchemaName>
-      <RefTableName>users</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="46" parent="19" name="ORDER_ID">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="47" parent="19" name="PRODUCT_ID">
-      <Position>2</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="48" parent="19" name="FK51o1gmd81uvet6y5ccct070k3">
+    <index id="45" parent="20" name="FKglgels4txbq4b5wwfe3qtqv7p">
       <ColNames>PRODUCT_ID</ColNames>
     </index>
-    <key id="49" parent="19" name="PRIMARY">
+    <key id="46" parent="20" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ORDER_ID
-PRODUCT_ID</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="50" parent="19" name="FKjx0g5rs8cv1k8pasnev7xupyb">
+    <foreign-key id="47" parent="20" name="FK3o61lxi3oa37jeics0y37kem0">
       <ColNames>ORDER_ID</ColNames>
       <RefSchemaName>shop-online-test</RefSchemaName>
       <RefTableName>orders</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="51" parent="19" name="FK51o1gmd81uvet6y5ccct070k3">
+    <foreign-key id="48" parent="20" name="FKglgels4txbq4b5wwfe3qtqv7p">
       <ColNames>PRODUCT_ID</ColNames>
       <RefSchemaName>shop-online-test</RefSchemaName>
       <RefTableName>products</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="52" parent="20" name="id">
+    <column id="49" parent="21" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="53" parent="20" name="DESCRIPTION">
+    <column id="50" parent="21" name="AMOUNT">
       <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
-    </column>
-    <column id="54" parent="20" name="NAME_PRODUCT">
-      <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-    </column>
-    <column id="55" parent="20" name="PHOTO">
-      <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
-    </column>
-    <column id="56" parent="20" name="PRICE">
-      <Position>5</Position>
       <DataType>double|0</DataType>
     </column>
-    <column id="57" parent="20" name="CATEGORY_ID">
+    <column id="51" parent="21" name="ORDER_DATE">
+      <Position>3</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="52" parent="21" name="ORDER_NUMBER">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="53" parent="21" name="QUANTITY">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="54" parent="21" name="USER_ID">
       <Position>6</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="58" parent="20" name="COUNT">
-      <Position>7</Position>
-      <DataType>int(11)|0</DataType>
-    </column>
-    <index id="59" parent="20" name="FK89flbvp09klukqvnbbq6hmyhj">
-      <ColNames>CATEGORY_ID</ColNames>
+    <index id="55" parent="21" name="FKodpu7ljn8tsfvwhk95kp4nugq">
+      <ColNames>USER_ID</ColNames>
     </index>
-    <key id="60" parent="20" name="PRIMARY">
+    <key id="56" parent="21" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="61" parent="20" name="FK89flbvp09klukqvnbbq6hmyhj">
-      <ColNames>CATEGORY_ID</ColNames>
-      <RefSchemaName>shop-online-test</RefSchemaName>
-      <RefTableName>categories</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="62" parent="21" name="id">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="63" parent="21" name="ROLE_NAME">
-      <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
-    </column>
-    <key id="64" parent="21" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="65" parent="22" name="USER_ID">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="66" parent="22" name="ROLE_ID">
-      <Position>2</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="67" parent="22" name="FKlrefmq6ik52ne53qiuodorwe5">
-      <ColNames>ROLE_ID</ColNames>
-    </index>
-    <key id="68" parent="22" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>USER_ID
-ROLE_ID</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="69" parent="22" name="FK9mgubk9qi0bw1vhcbd69iu45c">
+    <foreign-key id="57" parent="21" name="FKodpu7ljn8tsfvwhk95kp4nugq">
       <ColNames>USER_ID</ColNames>
       <RefSchemaName>shop-online-test</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="70" parent="22" name="FKlrefmq6ik52ne53qiuodorwe5">
-      <ColNames>ROLE_ID</ColNames>
+    <column id="58" parent="22" name="ORDER_ID">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="59" parent="22" name="PRODUCT_ID">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="60" parent="22" name="FKmvnoh96jwc8m4suxi1669cakh">
+      <ColNames>PRODUCT_ID</ColNames>
+    </index>
+    <key id="61" parent="22" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>ORDER_ID
+PRODUCT_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="62" parent="22" name="FKjx0g5rs8cv1k8pasnev7xupyb">
+      <ColNames>ORDER_ID</ColNames>
       <RefSchemaName>shop-online-test</RefSchemaName>
-      <RefTableName>roles</RefTableName>
+      <RefTableName>orders</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="71" parent="23" name="id">
+    <foreign-key id="63" parent="22" name="FKsthya5si3q834uaqxttq0i88">
+      <ColNames>ORDER_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>orders</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="64" parent="22" name="FK51o1gmd81uvet6y5ccct070k3">
+      <ColNames>PRODUCT_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>products</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="65" parent="22" name="FKmvnoh96jwc8m4suxi1669cakh">
+      <ColNames>PRODUCT_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>products</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="66" parent="23" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="72" parent="23" name="EMAIL">
+    <column id="67" parent="23" name="DESCRIPTION">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="73" parent="23" name="FIRST_NAME">
+    <column id="68" parent="23" name="NAME_PRODUCT">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="74" parent="23" name="LAST_NAME">
+    <column id="69" parent="23" name="PHOTO">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="75" parent="23" name="PASSWORD">
+    <column id="70" parent="23" name="PRICE">
       <Position>5</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>double|0</DataType>
     </column>
-    <column id="76" parent="23" name="PHONE">
+    <column id="71" parent="23" name="CATEGORY_ID">
       <Position>6</Position>
-      <DataType>varchar(255)|0</DataType>
+      <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="77" parent="23" name="USERNAME">
+    <column id="72" parent="23" name="COUNT">
       <Position>7</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="73" parent="23" name="code">
+      <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="78" parent="23" name="PRIMARY">
+    <index id="74" parent="23" name="FK89flbvp09klukqvnbbq6hmyhj">
+      <ColNames>CATEGORY_ID</ColNames>
+    </index>
+    <key id="75" parent="23" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
+    <foreign-key id="76" parent="23" name="FK89flbvp09klukqvnbbq6hmyhj">
+      <ColNames>CATEGORY_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>categories</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="77" parent="24" name="id">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="78" parent="24" name="ROLE_NAME">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="79" parent="24" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="80" parent="25" name="USER_ID">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="81" parent="25" name="ROLE_ID">
+      <Position>2</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="82" parent="25" name="FKlrefmq6ik52ne53qiuodorwe5">
+      <ColNames>ROLE_ID</ColNames>
+    </index>
+    <key id="83" parent="25" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>USER_ID
+ROLE_ID</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="84" parent="25" name="FK9mgubk9qi0bw1vhcbd69iu45c">
+      <ColNames>USER_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>users</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="85" parent="25" name="FKlrefmq6ik52ne53qiuodorwe5">
+      <ColNames>ROLE_ID</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>roles</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="86" parent="26" name="id">
+      <Position>1</Position>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="87" parent="26" name="EMAIL">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="88" parent="26" name="FIRST_NAME">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="89" parent="26" name="LAST_NAME">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="90" parent="26" name="PASSWORD">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="91" parent="26" name="PHONE">
+      <Position>6</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="92" parent="26" name="USERNAME">
+      <Position>7</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="93" parent="26" name="address_id">
+      <Position>8</Position>
+      <DataType>bigint(20)|0</DataType>
+    </column>
+    <index id="94" parent="26" name="FKcswqxe70us8j1fc0eauk0g9kx">
+      <ColNames>address_id</ColNames>
+    </index>
+    <key id="95" parent="26" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="96" parent="26" name="FKcswqxe70us8j1fc0eauk0g9kx">
+      <ColNames>address_id</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>addresses</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="97" parent="26" name="FKe8vydtk7hf0y16bfm558sywbb">
+      <ColNames>address_id</ColNames>
+      <RefSchemaName>shop-online-test</RefSchemaName>
+      <RefTableName>addresses</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>

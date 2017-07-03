@@ -1,9 +1,9 @@
 package com.netcracker.service;
 
-import com.netcracker.pojo.Address;
 import com.netcracker.pojo.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends BaseService<User, Long> {
 
@@ -11,7 +11,7 @@ public interface UserService extends BaseService<User, Long> {
 
     User loadByUsername(String username);
 
-    void insertInformationAboutUser(User user);
+    void editUserInformation(User user);
 
     User loadUserByEmail(String email);
 }

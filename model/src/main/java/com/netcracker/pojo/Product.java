@@ -1,16 +1,9 @@
 package com.netcracker.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.*;
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,10 +14,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
-@Entity @Table(name = "products")
+@Entity
+@Log
+@NoArgsConstructor
+@Table(name = "products")
 public class Product extends BaseEntity {
-    private static final Long serialVersionUID = 5L;
+
+    private static final long serialVersionUID = -4916412962878126741L;
 
     @Column(name = "NAME_PRODUCT")
     @Getter @Setter
@@ -42,16 +38,22 @@ public class Product extends BaseEntity {
     @Getter @Setter
     private String photo;
 
-    private String code;
+    @Column(name = "COUNT")
+    @Getter @Setter
+    private Integer count;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "CATEGORY_ID")
     @Getter @Setter
     private Category category;
 
+    @ManyToMany(mappedBy = "products")
+    @Getter @Setter
+    private Set<Order> orders = new HashSet<>();
+
     @OneToMany(mappedBy = "product")
     @Getter @Setter
-    private Set<OrderDetail> orders = new HashSet<>();
+    private Set<Comment> comments;
 
     public Product(String name, String description, Double price, String photo) {
         this.name = name;
@@ -60,36 +62,18 @@ public class Product extends BaseEntity {
         this.photo = photo;
     }
 
-    public Product(String name, String description, Double price, String photo, Category category) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.photo = photo;
-        this.category = category;
-    }
-
-    public Product(String name, String description, Double price, String photo, String code, Category category, Set<OrderDetail> orders) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.photo = photo;
-        this.code = code;
-        this.category = category;
-        this.orders = orders;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
-        if (!super.equals(o)) return false;
 
         Product product = (Product) o;
 
-        if (!name.equals(product.name)) return false;
-        if (!description.equals(product.description)) return false;
-        if (!price.equals(product.price)) return false;
-        return photo.equals(product.photo);
+        if (name != null ? !name.equals(product.name) : product.name != null) return false;
+        if (description != null ? !description.equals(product.description) : product.description != null) return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
+        if (photo != null ? !photo.equals(product.photo) : product.photo != null) return false;
+        return count != null ? count.equals(product.count) : product.count == null;
     }
 
     @Override
@@ -98,6 +82,7 @@ public class Product extends BaseEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (count != null ? count.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         return result;
     }
@@ -108,6 +93,7 @@ public class Product extends BaseEntity {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
+                ", count=" + count +
                 ", photo='" + photo + '\'' +
                 '}';
     }

@@ -18,11 +18,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
-@Entity @Table(name = "roles")
+@NoArgsConstructor
+@Log
+@Entity
+@Table(name = "roles")
 public class Role extends BaseEntity {
 
-    private static final Long serialVersionUID = 4L;
+    private static final long serialVersionUID = -6262324057754548782L;
 
     @Column(name = "ROLE_NAME")
     @Getter @Setter
@@ -40,7 +42,6 @@ public class Role extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Role)) return false;
-        if (!super.equals(o)) return false;
 
         Role role = (Role) o;
 

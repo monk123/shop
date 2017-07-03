@@ -13,6 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Implementation of {@link AddressService} and extend {@link BaseServiceImpl}
+ *
+ * @author Ayupov Vadim
+ */
 @Log
 @Service
 public class AddressServiceImpl extends BaseServiceImpl<Address, Long> implements AddressService {
@@ -20,30 +25,7 @@ public class AddressServiceImpl extends BaseServiceImpl<Address, Long> implement
     private AddressDao addressDao;
 
     @Autowired
-    public void setAddressDao(AddressDao addressDao) {
+    public AddressServiceImpl(AddressDao addressDao) {
         this.addressDao = addressDao;
-    }
-
-    @Override
-    @Transactional
-    public List getAddressDataByUserId(Long id) {
-        return addressDao.getAddressDataByUserId(id);
-    }
-
-    @Override
-    @Transactional
-    public String getAddressByUsername(String username) {
-        return addressDao.getAddressByUsername(username);
-    }
-
-    @Override
-    @Transactional
-    public void add(User user) {
-        Set<User> users = new HashSet<>();
-        users.add(user);
-
-        Address address = addressDao.getEntityById(user.getAddress().getId());
-
-        user.setAddress(address);
     }
 }

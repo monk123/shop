@@ -2,8 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="img" value="/resources/font/"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>AdminListPage</title>
@@ -21,21 +21,19 @@
         <table class="table jsgrid-header-sortable">
             <thead>
             <tr>
-                <th><spring:message code="label_product_id"/></th>
-                <th><spring:message code="label_product_name"/></th>
-                <th><spring:message code="label_product_description"/></th>
-                <th><spring:message code="label_product_price"/></th>
-                <th><spring:message code="label_product_category"/></th>
-                <th><spring:message code="label_product_photo"/></th>
-                <th><spring:message code="label_product_edit"/></th>
-                <th><spring:message code="label_product_delete"/></th>
-                <th><spring:message code="label_product_show"/></th>
+                <th><spring:message code="label.product.name"/></th>
+                <th><spring:message code="label.product.description"/></th>
+                <th><spring:message code="label.product.price"/></th>
+                <th><spring:message code="label.product.category"/></th>
+                <th><spring:message code="label.product.photo"/></th>
+                <th><spring:message code="label.product.edit"/></th>
+                <th><spring:message code="label.product.delete"/></th>
+                <th><spring:message code="label.product.show"/></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="table table-hover">
             <c:forEach items="${products}" var="product">
                 <tr>
-                    <td>${product.id}</td>
                     <td>${product.name}</td>
                     <td>${product.description}</td>
                     <td>${product.price}</td>
@@ -48,17 +46,17 @@
 
                     <td>
                         <button class="btn btn-primary" onclick="location.href='${updateUrl}'">
-                            <spring:message code="label_product_edit"/>
+                            <spring:message code="label.product.edit"/>
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-danger" onclick="location.href='${deleteUrl}'">
-                            <spring:message code="label_product_delete"/>
+                            <spring:message code="label.product.delete"/>
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-info" onclick="location.href='${productUrl}'">
-                            <spring:message code="label_product_show"/>
+                            <spring:message code="label.product.show"/>
                         </button>
                     </td>
                 </tr>
@@ -68,16 +66,24 @@
     </c:if>
 
     <div class="row">
+        <div class="col">
         <spring:url value="/admin/product/adminAddProductForm" var="addURL"/>
         <button class="btn btn-primary" onclick="location.href='${addURL}'">
-            <spring:message code="label_product_add"/>
+            <spring:message code="label.product.add"/>
         </button>
+        </div>
+        <div class="col">
+            <spring:url value="/admin/product/category/addCategory" var="addCategoryURL"/>
+            <button class="btn btn-primary" onclick="location.href='${addCategoryURL}'">
+                <spring:message code="label.button.add.category"/>
+            </button>
+        </div>
     </div>
 
     <div class="row">
-        <c:forEach var="page" items="${products}" begin="0" end="10">
+        <c:forEach var="page"  begin="1" end="${size}">
         <ul class="pagination">
-            <li href="/admin/product/list"></li>
+            <li><a href="/admin/product/list/${page}">${page}</a></li>
         </ul>
         </c:forEach>
     </div>

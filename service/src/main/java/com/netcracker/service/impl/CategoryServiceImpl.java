@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Implementation of {@link CategoryService} and extend {@link BaseServiceImpl}
+ *
+ * @author Ayupov Vadim
+ */
 @Log
 @Service
 public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> implements CategoryService {
@@ -17,18 +22,18 @@ public class CategoryServiceImpl extends BaseServiceImpl<Category, Long> impleme
     private CategoryDao categoryDao;
 
     @Autowired
-    public void setCategoryDao(CategoryDao categoryDao) {
+    public CategoryServiceImpl(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Category findCategoryByCategoryName(String categoryName) {
         return categoryDao.findCategoryByCategoryName(categoryName);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<String> getCategoryByUniqueName() {
         return categoryDao.getCategoryByUniqueName();
     }

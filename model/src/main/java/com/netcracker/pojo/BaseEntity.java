@@ -19,10 +19,12 @@ import java.io.Serializable;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
+@NoArgsConstructor
+@Log
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -7889037832210728714L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

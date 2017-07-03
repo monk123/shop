@@ -39,17 +39,15 @@
                             </button>
                     </div>
                 </div>
-
                 <br />
-
                 <div class="row">
                     <table class="table">
                         <thead>
-                        <td>Product Details</td>
+                        <td><spring:message code="label.product.details"/></td>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><spring:message code="label_product_description"/>:</td>
+                            <td><spring:message code="label.product.description"/>:</td>
                             <td>${product.description}</td>
                         </tr>
                         </tbody>
@@ -58,6 +56,65 @@
             </div>
         </div>
     </div>
+
+    <c:forEach var="commentProduct" items="${comments}">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-white post panel-shadow">
+                <div class="post-heading">
+                    <div class="pull-left meta">
+                        <div class="title h5">
+                            <a href="#"><b>${username}</b></a>
+                            made a post.
+                        </div>
+                        <h6 class="text-muted time">1 minute ago</h6>
+                    </div>
+                </div>
+                <div class="post-description">
+                    <p>${commentProduct.comment}</p>
+                   <!-- <div class="stats">
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-up icon"></i>2
+                        </a>
+                        <a href="#" class="btn btn-default stat-item">
+                            <i class="fa fa-thumbs-down icon"></i>12
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
     </div>
+    </c:forEach>
+
+    <div class="row">
+        <spring:url value="/welcome/add/comment/${product.id}" var="commentURL"/>
+
+        <form:form role="form" id="contact-form" class="contact-form"
+               modelAttribute="commit" method="post" action="${commentURL}">
+
+        <div class="row">
+
+            <form:hidden path="product.id"/>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <form:textarea class="form-control textarea" rows="3"
+                               name="Message" id="Message" placeholder="Message" path="comment"/>
+                    <form:errors path="comment"/>
+                </div>
+            </div>
+        </div>
+
+        <label class="col-md-3 control-label"></label>
+
+        <div class="col-md-8">
+            <c:if test="${empty commit.comment}">
+                <input class="btn main-btn pull-right" role="button" type="submit"
+                       value="<spring:message code="label.button.comment"/>"/>
+            </c:if>
+        </div>
+    </form:form>
+    </div>
+</div>
 </body>
 </html>

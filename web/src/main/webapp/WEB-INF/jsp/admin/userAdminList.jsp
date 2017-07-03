@@ -43,12 +43,32 @@
                     <td>${user.address.region}</td>
                     <td>${user.address.city}</td>
                     <td>${user.address.street}</td>
+
+                    <spring:url value="/admin/user/blocked/${user.id}" var="blockedUrl" />
+                    <spring:url value="/admin/user/unblocked/${user.id}" var="unblockedUrl" />
+
+                    <td>
+                        <button class="btn btn-primary" onclick="location.href='${unblockedUrl}'">
+                            <spring:message code="label.button.user.unblocked"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="location.href='${blockedUrl}'">
+                            <spring:message code="label.button.user.blocked"/>
+                        </button>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
         </div>
     </c:if>
+
+    <c:forEach var="page"  begin="1" end="${size}">
+        <ul class="pagination">
+            <li><a href="/admin/user/list/${page}">${page}</a></li>
+        </ul>
+    </c:forEach>
 </div>
 </body>
 </html>

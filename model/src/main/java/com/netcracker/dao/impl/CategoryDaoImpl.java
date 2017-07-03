@@ -23,11 +23,6 @@ import java.util.List;
 @Repository
 public class CategoryDaoImpl extends BaseDaoImpl<Category, Long> implements CategoryDao {
 
-    /**
-     * find category by name
-     * @param categoryName
-     * @return
-     */
     @Override
     public Category findCategoryByCategoryName(String categoryName) {
         Session session = getCurrentSession();

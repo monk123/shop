@@ -2,7 +2,6 @@ package com.netcracker.test;
 
 import com.netcracker.dao.AddressDao;
 import com.netcracker.dao.UserDao;
-import com.netcracker.pojo.Address;
 import com.netcracker.pojo.User;
 import lombok.extern.java.Log;
 import org.junit.Test;
@@ -12,10 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

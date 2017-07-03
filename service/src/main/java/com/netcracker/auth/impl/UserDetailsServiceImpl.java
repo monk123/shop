@@ -10,13 +10,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementation of {@link UserDetailsService} interface
@@ -25,23 +23,16 @@ import java.util.Set;
  */
 
 @Log
+@Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserDao userDao;
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public UserDetailsServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    /**
-     * The UserDetailsService interface is used to retrieve user-related data.
-     * It has one method named loadUserByUsername() which finds a user entity based on the username and
-     * can be overridden to customize the process of finding the user
-     * @param name
-     * @return
-     * @throws UsernameNotFoundException
-     */
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {

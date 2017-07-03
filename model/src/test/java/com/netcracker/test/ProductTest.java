@@ -1,5 +1,6 @@
 package com.netcracker.test;
 
+import com.netcracker.dao.CategoryDao;
 import com.netcracker.dao.ProductDao;
 import com.netcracker.pojo.Category;
 import com.netcracker.pojo.Product;
@@ -29,9 +30,8 @@ public class ProductTest {
 
     @Autowired
     private ProductDao productDao;
-
-    private void doWithProductDao(Consumer<ProductDao> productDaoConsumer) {
-    }
+    @Autowired
+    private CategoryDao categoryDao;
 
     @Test
     public void testSaveProduct() {
@@ -117,21 +117,6 @@ public class ProductTest {
     }
 
     @Test
-    public void testFindProduct() {
-        Product product = new Product();
-        product.setName("Keyboards test find");
-        product.setDescription("Keyboards description test find");
-        product.setPrice(24.99);
-        product.setPhoto("keyboards.jpg");
-
-        productDao.save(product);
-
-        Product productTest = productDao.findProduct("Keyboards test find");
-
-        assertEquals(product, productTest);
-    }
-
-    @Test
     public void testPaginationProduct() {
         List<Product> products = Arrays.asList(
                 new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
@@ -145,7 +130,7 @@ public class ProductTest {
 
         products.forEach(product -> productDao.save(product));
 
-        List<Product> productsTest = productDao.paginationProduct(0, 5);
+        List<Product> productsTest = productDao.paginationProduct(1, 5);
        // productsTest.forEach(product -> log.info("Products: " + product));
         productsTest.forEach(product -> log.info("Products list:" + product));
 
@@ -175,6 +160,12 @@ public class ProductTest {
 
     @Test
     public void testGetProductByCategoryName() {
+        Category category = new Category();
+        category.setCategoryName("keyboards");
+
+        Category category1 = new Category();
+        category1.setCategoryName("tv");
+
         List<Product> products = Arrays.asList(
                 new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
                 new Product("Keyboards 1", "desc 1", 24.99, "key.jpg"),
@@ -185,46 +176,9 @@ public class ProductTest {
 
         products.forEach(product -> productDao.save(product));
 
-        List<Product> productsTest = productDao.paginationProduct(0, 5);
+        List<Product> productsTest = productDao.getProductByCategoryName("tv", 0, 5);
 
         productsTest.forEach(product -> log.info("Products list:" + product));
-
-        assertEquals(5, productsTest.size());
     }
 
-    @Test
-    public void testDescProduct() {
-        List<Product> products = Arrays.asList(
-                new Product("Keyboards 1", "desc 1", 20.99, "key.jpg"),
-                new Product("Keyboards 1", "desc 1", 100.99, "key.jpg"),
-                new Product("Keyboards 1", "desc 1", 55.99, "key.jpg"),
-                new Product("Keyboards 1", "desc 1", 50.99, "key.jpg"),
-                new Product("Keyboards 1", "desc 1", 30.99, "key.jpg")
-        );
-
-        products.forEach(product -> productDao.save(product));
-
-        List<Product> productsTest = productDao.desc(0, 5);
-
-        productsTest.forEach(product -> log.info("Products desc list: " + product));
-    }
-
-    @Test
-    public void testAscProduct() {
-        doWithProductDao((productDao) -> {
-            List<Product> products = Arrays.asList(
-                    new Product("Keyboards 1", "desc 1", 20.99, "key.jpg"),
-                    new Product("Keyboards 1", "desc 1", 100.99, "key.jpg"),
-                    new Product("Keyboards 1", "desc 1", 55.99, "key.jpg"),
-                    new Product("Keyboards 1", "desc 1", 50.99, "key.jpg"),
-                    new Product("Keyboards 1", "desc 1", 30.99, "key.jpg")
-            );
-
-            products.forEach(productDao::save);
-
-            List<Product> productsTest = productDao.asc(0,5);
-
-            productsTest.forEach(product -> log.info("Products asc list: " + product));
-        });
-    }
 }

@@ -31,7 +31,6 @@ public class CategoryTest {
        int size = categoryDao.getAllEntities().size();
        Category category = new Category();
        category.setCategoryName("category save");
-       category.setDescription("category desc save");
 
        categoryDao.save(category);
 
@@ -42,7 +41,6 @@ public class CategoryTest {
     public void testUpdateCategory() {
         Category category = new Category();
         category.setCategoryName("category update");
-        category.setDescription("category desc update");
 
         categoryDao.save(category);
 
@@ -58,7 +56,6 @@ public class CategoryTest {
     public void testGetCategoryById() {
         Category category = new Category();
         category.setCategoryName("category findCategoryByCategoryName");
-        category.setDescription("category desc findCategoryByCategoryName");
 
         categoryDao.save(category);
 
@@ -72,14 +69,14 @@ public class CategoryTest {
       //  assertEquals(0, categoryDao.getAllEntities().size());
 
         List<Category> categories = Arrays.asList(
-                new Category("category 1", "category desc"),
-                new Category("category 2", "category desc"),
-                new Category("category 3", "category desc"),
-                new Category("category 3", "category desc"),
-                new Category("category 1", "category desc"),
-                new Category("category 1", "category desc"),
-                new Category("category 1", "category desc"),
-                new Category("category 1", "category desc")
+                new Category("category 1"),
+                new Category("category 2"),
+                new Category("category 3"),
+                new Category("category 3"),
+                new Category("category 1"),
+                new Category("category 1"),
+                new Category("category 1"),
+                new Category("category 1")
         );
 
         categories.forEach(category -> categoryDao.save(category));
@@ -99,7 +96,6 @@ public class CategoryTest {
     public void testDeleteCategory() {
         Category category = new Category();
         category.setCategoryName("category delete");
-        category.setDescription("category desc delete");
 
         categoryDao.save(category);
 
@@ -114,7 +110,6 @@ public class CategoryTest {
     public void testFindProduct() {
         Category category = new Category();
         category.setCategoryName("Keyboards");
-        category.setDescription("Keyboards description test find");
 
         categoryDao.save(category);
 

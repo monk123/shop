@@ -2,8 +2,6 @@ package com.netcracker.pojo;
 
 import lombok.*;
 import lombok.extern.java.Log;
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,10 +13,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
-@Entity @Table(name = "users")
+@NoArgsConstructor
+@Log
+@Entity
+@Table(name = "users")
 public class User extends BaseEntity {
-    private static final Long serialVersionUID = 3L;
+
+    private static final long serialVersionUID = -9025091900990031369L;
 
     @Column(name = "USERNAME")
     @Getter @Setter
@@ -30,7 +31,6 @@ public class User extends BaseEntity {
 
     @Column(name = "EMAIL")
     @Getter @Setter
-    @Email
     private String email;
 
     @Column(name = "PHONE")
@@ -45,6 +45,10 @@ public class User extends BaseEntity {
     @Getter @Setter
     private String confirmPassword;
 
+    @Transient
+    @Getter @Setter
+    private boolean isActive;
+
     @ManyToOne
     @JoinColumn(name = "ADDRESS_ID")
     @Getter @Setter
@@ -54,43 +58,28 @@ public class User extends BaseEntity {
     @Getter @Setter
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "user")
+    @Getter @Setter
+    private Set<Comment> comments;
+
     @ManyToMany
     @JoinTable(name = "user_has_roles", joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     @Getter @Setter
     private Set<Role> roles = new HashSet<>();
 
-    public User(String firstName, String lastName, String email, String phone, String password) {
-        this.username = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-    }
-
-    public User(String username, String lastName, String email, String phone, Address address) {
-        this.username = username;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-    }
-
-    public User(String username, String lastName, String email, String phone, String password, String confirmPassword, Address address) {
+    public User(String username, String lastName, String email, String phone, String password) {
         this.username = username;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.address = address;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
-        if (!super.equals(o)) return false;
 
         User user = (User) o;
 

@@ -2,9 +2,6 @@ package com.netcracker.pojo;
 
 import lombok.*;
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,10 +14,13 @@ import java.util.Set;
  * @version 1.0
  */
 
-@NoArgsConstructor @Log
-@Entity @Table(name = "addresses")
+@Log
+@NoArgsConstructor
+@Entity
+@Table(name = "addresses")
 public class Address extends BaseEntity {
-    private static final Long serialVersionUID = 2L;
+
+    private static final long serialVersionUID = -2464987906951248410L;
 
     @Column(name = "COUNTRY")
     @Getter @Setter
@@ -38,7 +38,7 @@ public class Address extends BaseEntity {
     @Getter @Setter
     private String street;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "address")
     @Getter @Setter
     private Set<User> users = new HashSet<>();
 
@@ -53,7 +53,6 @@ public class Address extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address)) return false;
-        if (!super.equals(o)) return false;
 
         Address address = (Address) o;
 
@@ -82,4 +81,10 @@ public class Address extends BaseEntity {
                 ", street='" + street + '\'' +
                 '}';
     }
+
+    public void add(User user) {
+        users.add(user);
+        user.setAddress(this);
+    }
+
 }
